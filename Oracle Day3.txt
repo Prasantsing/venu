@@ -1,0 +1,3845 @@
+Microsoft Windows [Version 10.0.22000.1219]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\ajink>sqlplus
+
+SQL*Plus: Release 11.2.0.2.0 Production on Sat Nov 19 08:58:48 2022
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+Enter user-name: hr
+Enter password: hr(//Hidden ---> Not display on Screen)
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> create table tableone(eid number, ename varchar2(20), email varchar2(20));
+
+Table created.
+
+SQL> create table tabletwo(ename varchar2(20), city varchar2(20));
+
+Table created.
+
+SQL> insert table 1 values(1, 'Ajinkya', 'Ajinnkya1@gmail.com');
+insert table 1 values(1, 'Ajinkya', 'Ajinnkya1@gmail.com')
+       *
+ERROR at line 1:
+ORA-00925: missing INTO keyword
+
+
+SQL> insert tableone values(1, 'Ajinkya', 'Ajinnkya1@gmail.com');
+insert tableone values(1, 'Ajinkya', 'Ajinnkya1@gmail.com')
+       *
+ERROR at line 1:
+ORA-00925: missing INTO keyword
+
+
+SQL> insert into tableone values(1, 'Ajinkya', 'Ajinnkya1@gmail.com');
+
+1 row created.
+
+SQL> insert into tableone values(2, 'Vinod', 'Vinod2gmail.com');
+
+1 row created.
+
+SQL> insert into tableone values(3, 'Kapil', 'Kapil3@gmail.com');
+
+1 row created.
+
+SQL> insert into tableone values(5, 'Ashok', 'Ashok4@gmail.com');
+
+1 row created.
+
+SQL> insert into tableone values(4, 'Prajwal', 'Prajwal4@gmail.com');
+
+1 row created.
+
+SQL> select * from tableone;
+
+       EID ENAME                EMAIL
+---------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com
+         2 Vinod                Vinod2gmail.com
+         3 Kapil                Kapil3@gmail.com
+         5 Ashok                Ashok4@gmail.com
+         4 Prajwal              Prajwal4@gmail.com
+
+SQL> delete eid from tableone where eid=5;
+delete eid from tableone where eid=5
+           *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> delete from tableone where eid=5;
+
+1 row deleted.
+
+SQL> insert into tableone values(5, 'Ashok', 'Ashok5@gmail.com');
+
+1 row created.
+
+SQL> select * from tableone;
+
+       EID ENAME                EMAIL
+---------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com
+         2 Vinod                Vinod2gmail.com
+         3 Kapil                Kapil3@gmail.com
+         4 Prajwal              Prajwal4@gmail.com
+         5 Ashok                Ashok5@gmail.com
+
+SQL> insert into tabletwo('Ajinkya','Pandharpur');
+insert into tabletwo('Ajinkya','Pandharpur')
+                     *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> insert into tabletwo values('Ajinkya','Pandharpur');
+
+1 row created.
+
+SQL> insert into tabletwo values('Rajesh','Solapur');
+
+1 row created.
+
+SQL> insert into tabletwo values('Vinod','Pandharpur');
+
+1 row created.
+
+SQL> insert into tabletwo values('Sandip','Pune');
+
+1 row created.
+
+SQL> select * from tabletwo;
+
+ENAME                CITY
+-------------------- --------------------
+Ajinkya              Pandharpur
+Rajesh               Solapur
+Vinod                Pandharpur
+Sandip               Pune
+
+SQL> select eid, ename,email,city from tableone natural join tabletwo;
+
+       EID ENAME                EMAIL                CITY
+---------- -------------------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com  Pandharpur
+         2 Vinod                Vinod2gmail.com      Pandharpur
+
+SQL> select eid, ename,email,city from tableone natural join tabletwo using(ename);
+select eid, ename,email,city from tableone natural join tabletwo using(ename)
+                                                                 *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select eid, ename,email,city from tableone join tabletwo using(ename);
+
+       EID ENAME                EMAIL                CITY
+---------- -------------------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com  Pandharpur
+         2 Vinod                Vinod2gmail.com      Pandharpur
+
+SQL> select eid, ename,email,city from tableone join tabletwo on(ename);
+select eid, ename,email,city from tableone join tabletwo on(ename)
+                                                                 *
+ERROR at line 1:
+ORA-00920: invalid relational operator
+
+
+SQL> select eid, ename,email,city from tableone left join tabletwo using(ename);
+
+       EID ENAME                EMAIL                CITY
+---------- -------------------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com  Pandharpur
+         2 Vinod                Vinod2gmail.com      Pandharpur
+         3 Kapil                Kapil3@gmail.com
+         5 Ashok                Ashok5@gmail.com
+         4 Prajwal              Prajwal4@gmail.com
+
+SQL> select eid, ename,email,city from tableone right join tabletwo using(ename);
+
+       EID ENAME                EMAIL                CITY
+---------- -------------------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com  Pandharpur
+         2 Vinod                Vinod2gmail.com      Pandharpur
+           Sandip                                    Pune
+           Rajesh                                    Solapur
+
+SQL> select eid, ename,email,city from tableone full join tabletwo;
+select eid, ename,email,city from tableone full join tabletwo
+                                                            *
+ERROR at line 1:
+ORA-00905: missing keyword
+
+
+SQL> select eid, ename,email,city from tableone full join tabletwo using(ename);
+
+       EID ENAME                EMAIL                CITY
+---------- -------------------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com  Pandharpur
+         2 Vinod                Vinod2gmail.com      Pandharpur
+         3 Kapil                Kapil3@gmail.com
+         4 Prajwal              Prajwal4@gmail.com
+         5 Ashok                Ashok5@gmail.com
+           Sandip                                    Pune
+           Rajesh                                    Solapur
+
+7 rows selected.
+
+SQL> select * from tableone cross join tabletwo;
+
+       EID ENAME                EMAIL                ENAME
+---------- -------------------- -------------------- --------------------
+CITY
+--------------------
+         1 Ajinkya              Ajinnkya1@gmail.com  Ajinkya
+Pandharpur
+
+         2 Vinod                Vinod2gmail.com      Ajinkya
+Pandharpur
+
+         3 Kapil                Kapil3@gmail.com     Ajinkya
+Pandharpur
+
+
+       EID ENAME                EMAIL                ENAME
+---------- -------------------- -------------------- --------------------
+CITY
+--------------------
+         4 Prajwal              Prajwal4@gmail.com   Ajinkya
+Pandharpur
+
+         5 Ashok                Ashok5@gmail.com     Ajinkya
+Pandharpur
+
+         1 Ajinkya              Ajinnkya1@gmail.com  Rajesh
+Solapur
+
+
+       EID ENAME                EMAIL                ENAME
+---------- -------------------- -------------------- --------------------
+CITY
+--------------------
+         2 Vinod                Vinod2gmail.com      Rajesh
+Solapur
+
+         3 Kapil                Kapil3@gmail.com     Rajesh
+Solapur
+
+         4 Prajwal              Prajwal4@gmail.com   Rajesh
+Solapur
+
+
+       EID ENAME                EMAIL                ENAME
+---------- -------------------- -------------------- --------------------
+CITY
+--------------------
+         5 Ashok                Ashok5@gmail.com     Rajesh
+Solapur
+
+         1 Ajinkya              Ajinnkya1@gmail.com  Vinod
+Pandharpur
+
+         2 Vinod                Vinod2gmail.com      Vinod
+Pandharpur
+
+
+       EID ENAME                EMAIL                ENAME
+---------- -------------------- -------------------- --------------------
+CITY
+--------------------
+         3 Kapil                Kapil3@gmail.com     Vinod
+Pandharpur
+
+         4 Prajwal              Prajwal4@gmail.com   Vinod
+Pandharpur
+
+         5 Ashok                Ashok5@gmail.com     Vinod
+Pandharpur
+
+
+       EID ENAME                EMAIL                ENAME
+---------- -------------------- -------------------- --------------------
+CITY
+--------------------
+         1 Ajinkya              Ajinnkya1@gmail.com  Sandip
+Pune
+
+         2 Vinod                Vinod2gmail.com      Sandip
+Pune
+
+         3 Kapil                Kapil3@gmail.com     Sandip
+Pune
+
+
+       EID ENAME                EMAIL                ENAME
+---------- -------------------- -------------------- --------------------
+CITY
+--------------------
+         4 Prajwal              Prajwal4@gmail.com   Sandip
+Pune
+
+         5 Ashok                Ashok5@gmail.com     Sandip
+Pune
+
+
+20 rows selected.
+
+SQL> create table tablethree(emp_name varchar2(20), city varchar2(20));
+
+Table created.
+
+SQL> insert into tablethree values('Ajinkya', 'Solapur');
+
+1 row created.
+
+SQL> insert into tablethree values('Vinod', 'Pandharpur');
+
+1 row created.
+
+SQL> insert into tablethree values('Aditya','Pune');
+
+1 row created.
+
+SQL> insert into tablethree values('Avinash','Sangola');
+
+1 row created.
+
+SQL> select * from tablethree;
+
+EMP_NAME             CITY
+-------------------- --------------------
+Ajinkya              Solapur
+Vinod                Pandharpur
+Aditya               Pune
+Avinash              Sangola
+
+SQL> select t1.eid, t1.name,t1.email,t3.city from tableone t1 natural join tablethree t3 on(t1.ename=t3.emp_name));
+select t1.eid, t1.name,t1.email,t3.city from tableone t1 natural join tablethree t3 on(t1.ename=t3.emp_name))
+                                                                                    *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select t1.eid, t1.name,t1.email,t3.city from tableone t1 join tablethree t3 on(t1.ename=t3.emp_name));
+select t1.eid, t1.name,t1.email,t3.city from tableone t1 join tablethree t3 on(t1.ename=t3.emp_name))
+                                                                                                    *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select t1.eid, t1.name,t1.email,t3.city from tableone t1 join tablethree t3 on(t1.ename=t3.emp_name);
+select t1.eid, t1.name,t1.email,t3.city from tableone t1 join tablethree t3 on(t1.ename=t3.emp_name)
+               *
+ERROR at line 1:
+ORA-00904: "T1"."NAME": invalid identifier
+
+
+SQL> select t1.eid, t1.ename,t1.email,t3.city from tableone t1 join tablethree t3 on(t1.ename=t3.emp_name);
+
+       EID ENAME                EMAIL                CITY
+---------- -------------------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com  Solapur
+         2 Vinod                Vinod2gmail.com      Pandharpur
+
+SQL> select * from employees;
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        100 Steven               King
+SKING                     515.123.4567         17-JUN-03 AD_PRES         24000
+                                     90
+
+        101 Neena                Kochhar
+NKOCHHAR                  515.123.4568         21-SEP-05 AD_VP           17000
+                      100            90
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        102 Lex                  De Haan
+LDEHAAN                   515.123.4569         13-JAN-01 AD_VP           17000
+                      100            90
+
+        103 Alexander            Hunold
+AHUNOLD                   590.423.4567         03-JAN-06 IT_PROG          9000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      102            60
+
+        104 Bruce                Ernst
+BERNST                    590.423.4568         21-MAY-07 IT_PROG          6000
+                      103            60
+
+        105 David                Austin
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+DAUSTIN                   590.423.4569         25-JUN-05 IT_PROG          4800
+                      103            60
+
+        106 Valli                Pataballa
+VPATABAL                  590.423.4560         05-FEB-06 IT_PROG          4800
+                      103            60
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        107 Diana                Lorentz
+DLORENTZ                  590.423.5567         07-FEB-07 IT_PROG          4200
+                      103            60
+
+        108 Nancy                Greenberg
+NGREENBE                  515.124.4569         17-AUG-02 FI_MGR          12008
+                      101           100
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        109 Daniel               Faviet
+DFAVIET                   515.124.4169         16-AUG-02 FI_ACCOUNT       9000
+                      108           100
+
+        110 John                 Chen
+JCHEN                     515.124.4269         28-SEP-05 FI_ACCOUNT       8200
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      108           100
+
+        111 Ismael               Sciarra
+ISCIARRA                  515.124.4369         30-SEP-05 FI_ACCOUNT       7700
+                      108           100
+
+        112 Jose Manuel          Urman
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+JMURMAN                   515.124.4469         07-MAR-06 FI_ACCOUNT       7800
+                      108           100
+
+        113 Luis                 Popp
+LPOPP                     515.124.4567         07-DEC-07 FI_ACCOUNT       6900
+                      108           100
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        114 Den                  Raphaely
+DRAPHEAL                  515.127.4561         07-DEC-02 PU_MAN          11000
+                      100            30
+
+        115 Alexander            Khoo
+AKHOO                     515.127.4562         18-MAY-03 PU_CLERK         3100
+                      114            30
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        116 Shelli               Baida
+SBAIDA                    515.127.4563         24-DEC-05 PU_CLERK         2900
+                      114            30
+
+        117 Sigal                Tobias
+STOBIAS                   515.127.4564         24-JUL-05 PU_CLERK         2800
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      114            30
+
+        118 Guy                  Himuro
+GHIMURO                   515.127.4565         15-NOV-06 PU_CLERK         2600
+                      114            30
+
+        119 Karen                Colmenares
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+KCOLMENA                  515.127.4566         10-AUG-07 PU_CLERK         2500
+                      114            30
+
+        120 Matthew              Weiss
+MWEISS                    650.123.1234         18-JUL-04 ST_MAN           8000
+                      100            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        121 Adam                 Fripp
+AFRIPP                    650.123.2234         10-APR-05 ST_MAN           8200
+                      100            50
+
+        122 Payam                Kaufling
+PKAUFLIN                  650.123.3234         01-MAY-03 ST_MAN           7900
+                      100            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        123 Shanta               Vollman
+SVOLLMAN                  650.123.4234         10-OCT-05 ST_MAN           6500
+                      100            50
+
+        124 Kevin                Mourgos
+KMOURGOS                  650.123.5234         16-NOV-07 ST_MAN           5800
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      100            50
+
+        125 Julia                Nayer
+JNAYER                    650.124.1214         16-JUL-05 ST_CLERK         3200
+                      120            50
+
+        126 Irene                Mikkilineni
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+IMIKKILI                  650.124.1224         28-SEP-06 ST_CLERK         2700
+                      120            50
+
+        127 James                Landry
+JLANDRY                   650.124.1334         14-JAN-07 ST_CLERK         2400
+                      120            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        128 Steven               Markle
+SMARKLE                   650.124.1434         08-MAR-08 ST_CLERK         2200
+                      120            50
+
+        129 Laura                Bissot
+LBISSOT                   650.124.5234         20-AUG-05 ST_CLERK         3300
+                      121            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        130 Mozhe                Atkinson
+MATKINSO                  650.124.6234         30-OCT-05 ST_CLERK         2800
+                      121            50
+
+        131 James                Marlow
+JAMRLOW                   650.124.7234         16-FEB-05 ST_CLERK         2500
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      121            50
+
+        132 TJ                   Olson
+TJOLSON                   650.124.8234         10-APR-07 ST_CLERK         2100
+                      121            50
+
+        133 Jason                Mallin
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+JMALLIN                   650.127.1934         14-JUN-04 ST_CLERK         3300
+                      122            50
+
+        134 Michael              Rogers
+MROGERS                   650.127.1834         26-AUG-06 ST_CLERK         2900
+                      122            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        135 Ki                   Gee
+KGEE                      650.127.1734         12-DEC-07 ST_CLERK         2400
+                      122            50
+
+        136 Hazel                Philtanker
+HPHILTAN                  650.127.1634         06-FEB-08 ST_CLERK         2200
+                      122            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        137 Renske               Ladwig
+RLADWIG                   650.121.1234         14-JUL-03 ST_CLERK         3600
+                      123            50
+
+        138 Stephen              Stiles
+SSTILES                   650.121.2034         26-OCT-05 ST_CLERK         3200
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      123            50
+
+        139 John                 Seo
+JSEO                      650.121.2019         12-FEB-06 ST_CLERK         2700
+                      123            50
+
+        140 Joshua               Patel
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+JPATEL                    650.121.1834         06-APR-06 ST_CLERK         2500
+                      123            50
+
+        141 Trenna               Rajs
+TRAJS                     650.121.8009         17-OCT-03 ST_CLERK         3500
+                      124            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        142 Curtis               Davies
+CDAVIES                   650.121.2994         29-JAN-05 ST_CLERK         3100
+                      124            50
+
+        143 Randall              Matos
+RMATOS                    650.121.2874         15-MAR-06 ST_CLERK         2600
+                      124            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        144 Peter                Vargas
+PVARGAS                   650.121.2004         09-JUL-06 ST_CLERK         2500
+                      124            50
+
+        145 John                 Russell
+JRUSSEL                   011.44.1344.429268   01-OCT-04 SA_MAN          14000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+            .4        100            80
+
+        146 Karen                Partners
+KPARTNER                  011.44.1344.467268   05-JAN-05 SA_MAN          13500
+            .3        100            80
+
+        147 Alberto              Errazuriz
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+AERRAZUR                  011.44.1344.429278   10-MAR-05 SA_MAN          12000
+            .3        100            80
+
+        148 Gerald               Cambrault
+GCAMBRAU                  011.44.1344.619268   15-OCT-07 SA_MAN          11000
+            .3        100            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        149 Eleni                Zlotkey
+EZLOTKEY                  011.44.1344.429018   29-JAN-08 SA_MAN          10500
+            .2        100            80
+
+        150 Peter                Tucker
+PTUCKER                   011.44.1344.129268   30-JAN-05 SA_REP          10000
+            .3        145            80
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        151 David                Bernstein
+DBERNSTE                  011.44.1344.345268   24-MAR-05 SA_REP           9500
+           .25        145            80
+
+        152 Peter                Hall
+PHALL                     011.44.1344.478968   20-AUG-05 SA_REP           9000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+           .25        145            80
+
+        153 Christopher          Olsen
+COLSEN                    011.44.1344.498718   30-MAR-06 SA_REP           8000
+            .2        145            80
+
+        154 Nanette              Cambrault
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+NCAMBRAU                  011.44.1344.987668   09-DEC-06 SA_REP           7500
+            .2        145            80
+
+        155 Oliver               Tuvault
+OTUVAULT                  011.44.1344.486508   23-NOV-07 SA_REP           7000
+           .15        145            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        156 Janette              King
+JKING                     011.44.1345.429268   30-JAN-04 SA_REP          10000
+           .35        146            80
+
+        157 Patrick              Sully
+PSULLY                    011.44.1345.929268   04-MAR-04 SA_REP           9500
+           .35        146            80
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        158 Allan                McEwen
+AMCEWEN                   011.44.1345.829268   01-AUG-04 SA_REP           9000
+           .35        146            80
+
+        159 Lindsey              Smith
+LSMITH                    011.44.1345.729268   10-MAR-05 SA_REP           8000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+            .3        146            80
+
+        160 Louise               Doran
+LDORAN                    011.44.1345.629268   15-DEC-05 SA_REP           7500
+            .3        146            80
+
+        161 Sarath               Sewall
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+SSEWALL                   011.44.1345.529268   03-NOV-06 SA_REP           7000
+           .25        146            80
+
+        162 Clara                Vishney
+CVISHNEY                  011.44.1346.129268   11-NOV-05 SA_REP          10500
+           .25        147            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        163 Danielle             Greene
+DGREENE                   011.44.1346.229268   19-MAR-07 SA_REP           9500
+           .15        147            80
+
+        164 Mattea               Marvins
+MMARVINS                  011.44.1346.329268   24-JAN-08 SA_REP           7200
+            .1        147            80
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        165 David                Lee
+DLEE                      011.44.1346.529268   23-FEB-08 SA_REP           6800
+            .1        147            80
+
+        166 Sundar               Ande
+SANDE                     011.44.1346.629268   24-MAR-08 SA_REP           6400
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+            .1        147            80
+
+        167 Amit                 Banda
+ABANDA                    011.44.1346.729268   21-APR-08 SA_REP           6200
+            .1        147            80
+
+        168 Lisa                 Ozer
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+LOZER                     011.44.1343.929268   11-MAR-05 SA_REP          11500
+           .25        148            80
+
+        169 Harrison             Bloom
+HBLOOM                    011.44.1343.829268   23-MAR-06 SA_REP          10000
+            .2        148            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        170 Tayler               Fox
+TFOX                      011.44.1343.729268   24-JAN-06 SA_REP           9600
+            .2        148            80
+
+        171 William              Smith
+WSMITH                    011.44.1343.629268   23-FEB-07 SA_REP           7400
+           .15        148            80
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        172 Elizabeth            Bates
+EBATES                    011.44.1343.529268   24-MAR-07 SA_REP           7300
+           .15        148            80
+
+        173 Sundita              Kumar
+SKUMAR                    011.44.1343.329268   21-APR-08 SA_REP           6100
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+            .1        148            80
+
+        174 Ellen                Abel
+EABEL                     011.44.1644.429267   11-MAY-04 SA_REP          11000
+            .3        149            80
+
+        175 Alyssa               Hutton
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+AHUTTON                   011.44.1644.429266   19-MAR-05 SA_REP           8800
+           .25        149            80
+
+        176 Jonathon             Taylor
+JTAYLOR                   011.44.1644.429265   24-MAR-06 SA_REP           8600
+            .2        149            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        177 Jack                 Livingston
+JLIVINGS                  011.44.1644.429264   23-APR-06 SA_REP           8400
+            .2        149            80
+
+        178 Kimberely            Grant
+KGRANT                    011.44.1644.429263   24-MAY-07 SA_REP           7000
+           .15        149
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        179 Charles              Johnson
+CJOHNSON                  011.44.1644.429262   04-JAN-08 SA_REP           6200
+            .1        149            80
+
+        180 Winston              Taylor
+WTAYLOR                   650.507.9876         24-JAN-06 SH_CLERK         3200
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      120            50
+
+        181 Jean                 Fleaur
+JFLEAUR                   650.507.9877         23-FEB-06 SH_CLERK         3100
+                      120            50
+
+        182 Martha               Sullivan
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+MSULLIVA                  650.507.9878         21-JUN-07 SH_CLERK         2500
+                      120            50
+
+        183 Girard               Geoni
+GGEONI                    650.507.9879         03-FEB-08 SH_CLERK         2800
+                      120            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        184 Nandita              Sarchand
+NSARCHAN                  650.509.1876         27-JAN-04 SH_CLERK         4200
+                      121            50
+
+        185 Alexis               Bull
+ABULL                     650.509.2876         20-FEB-05 SH_CLERK         4100
+                      121            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        186 Julia                Dellinger
+JDELLING                  650.509.3876         24-JUN-06 SH_CLERK         3400
+                      121            50
+
+        187 Anthony              Cabrio
+ACABRIO                   650.509.4876         07-FEB-07 SH_CLERK         3000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      121            50
+
+        188 Kelly                Chung
+KCHUNG                    650.505.1876         14-JUN-05 SH_CLERK         3800
+                      122            50
+
+        189 Jennifer             Dilly
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+JDILLY                    650.505.2876         13-AUG-05 SH_CLERK         3600
+                      122            50
+
+        190 Timothy              Gates
+TGATES                    650.505.3876         11-JUL-06 SH_CLERK         2900
+                      122            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        191 Randall              Perkins
+RPERKINS                  650.505.4876         19-DEC-07 SH_CLERK         2500
+                      122            50
+
+        192 Sarah                Bell
+SBELL                     650.501.1876         04-FEB-04 SH_CLERK         4000
+                      123            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        193 Britney              Everett
+BEVERETT                  650.501.2876         03-MAR-05 SH_CLERK         3900
+                      123            50
+
+        194 Samuel               McCain
+SMCCAIN                   650.501.3876         01-JUL-06 SH_CLERK         3200
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      123            50
+
+        195 Vance                Jones
+VJONES                    650.501.4876         17-MAR-07 SH_CLERK         2800
+                      123            50
+
+        196 Alana                Walsh
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+AWALSH                    650.507.9811         24-APR-06 SH_CLERK         3100
+                      124            50
+
+        197 Kevin                Feeney
+KFEENEY                   650.507.9822         23-MAY-06 SH_CLERK         3000
+                      124            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        198 Donald               OConnell
+DOCONNEL                  650.507.9833         21-JUN-07 SH_CLERK         2600
+                      124            50
+
+        199 Douglas              Grant
+DGRANT                    650.507.9844         13-JAN-08 SH_CLERK         2600
+                      124            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        200 Jennifer             Whalen
+JWHALEN                   515.123.4444         17-SEP-03 AD_ASST          4400
+                      101            10
+
+        201 Michael              Hartstein
+MHARTSTE                  515.123.5555         17-FEB-04 MK_MAN          13000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      100            20
+
+        202 Pat                  Fay
+PFAY                      603.123.6666         17-AUG-05 MK_REP           6000
+                      201            20
+
+        203 Susan                Mavris
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+SMAVRIS                   515.123.7777         07-JUN-02 HR_REP           6500
+                      101            40
+
+        204 Hermann              Baer
+HBAER                     515.123.8888         07-JUN-02 PR_REP          10000
+                      101            70
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        205 Shelley              Higgins
+SHIGGINS                  515.123.8080         07-JUN-02 AC_MGR          12008
+                      101           110
+
+        206 William              Gietz
+WGIETZ                    515.123.8181         07-JUN-02 AC_ACCOUNT       8300
+                      205           110
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+
+107 rows selected.
+
+SQL> select * from employees;
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        100 Steven               King
+SKING                     515.123.4567         17-JUN-03 AD_PRES         24000
+                                     90
+
+        101 Neena                Kochhar
+NKOCHHAR                  515.123.4568         21-SEP-05 AD_VP           17000
+                      100            90
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        102 Lex                  De Haan
+LDEHAAN                   515.123.4569         13-JAN-01 AD_VP           17000
+                      100            90
+
+        103 Alexander            Hunold
+AHUNOLD                   590.423.4567         03-JAN-06 IT_PROG          9000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      102            60
+
+        104 Bruce                Ernst
+BERNST                    590.423.4568         21-MAY-07 IT_PROG          6000
+                      103            60
+
+        105 David                Austin
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+DAUSTIN                   590.423.4569         25-JUN-05 IT_PROG          4800
+                      103            60
+
+        106 Valli                Pataballa
+VPATABAL                  590.423.4560         05-FEB-06 IT_PROG          4800
+                      103            60
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        107 Diana                Lorentz
+DLORENTZ                  590.423.5567         07-FEB-07 IT_PROG          4200
+                      103            60
+
+        108 Nancy                Greenberg
+NGREENBE                  515.124.4569         17-AUG-02 FI_MGR          12008
+                      101           100
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        109 Daniel               Faviet
+DFAVIET                   515.124.4169         16-AUG-02 FI_ACCOUNT       9000
+                      108           100
+
+        110 John                 Chen
+JCHEN                     515.124.4269         28-SEP-05 FI_ACCOUNT       8200
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      108           100
+
+        111 Ismael               Sciarra
+ISCIARRA                  515.124.4369         30-SEP-05 FI_ACCOUNT       7700
+                      108           100
+
+        112 Jose Manuel          Urman
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+JMURMAN                   515.124.4469         07-MAR-06 FI_ACCOUNT       7800
+                      108           100
+
+        113 Luis                 Popp
+LPOPP                     515.124.4567         07-DEC-07 FI_ACCOUNT       6900
+                      108           100
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        114 Den                  Raphaely
+DRAPHEAL                  515.127.4561         07-DEC-02 PU_MAN          11000
+                      100            30
+
+        115 Alexander            Khoo
+AKHOO                     515.127.4562         18-MAY-03 PU_CLERK         3100
+                      114            30
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        116 Shelli               Baida
+SBAIDA                    515.127.4563         24-DEC-05 PU_CLERK         2900
+                      114            30
+
+        117 Sigal                Tobias
+STOBIAS                   515.127.4564         24-JUL-05 PU_CLERK         2800
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      114            30
+
+        118 Guy                  Himuro
+GHIMURO                   515.127.4565         15-NOV-06 PU_CLERK         2600
+                      114            30
+
+        119 Karen                Colmenares
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+KCOLMENA                  515.127.4566         10-AUG-07 PU_CLERK         2500
+                      114            30
+
+        120 Matthew              Weiss
+MWEISS                    650.123.1234         18-JUL-04 ST_MAN           8000
+                      100            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        121 Adam                 Fripp
+AFRIPP                    650.123.2234         10-APR-05 ST_MAN           8200
+                      100            50
+
+        122 Payam                Kaufling
+PKAUFLIN                  650.123.3234         01-MAY-03 ST_MAN           7900
+                      100            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        123 Shanta               Vollman
+SVOLLMAN                  650.123.4234         10-OCT-05 ST_MAN           6500
+                      100            50
+
+        124 Kevin                Mourgos
+KMOURGOS                  650.123.5234         16-NOV-07 ST_MAN           5800
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      100            50
+
+        125 Julia                Nayer
+JNAYER                    650.124.1214         16-JUL-05 ST_CLERK         3200
+                      120            50
+
+        126 Irene                Mikkilineni
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+IMIKKILI                  650.124.1224         28-SEP-06 ST_CLERK         2700
+                      120            50
+
+        127 James                Landry
+JLANDRY                   650.124.1334         14-JAN-07 ST_CLERK         2400
+                      120            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        128 Steven               Markle
+SMARKLE                   650.124.1434         08-MAR-08 ST_CLERK         2200
+                      120            50
+
+        129 Laura                Bissot
+LBISSOT                   650.124.5234         20-AUG-05 ST_CLERK         3300
+                      121            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        130 Mozhe                Atkinson
+MATKINSO                  650.124.6234         30-OCT-05 ST_CLERK         2800
+                      121            50
+
+        131 James                Marlow
+JAMRLOW                   650.124.7234         16-FEB-05 ST_CLERK         2500
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      121            50
+
+        132 TJ                   Olson
+TJOLSON                   650.124.8234         10-APR-07 ST_CLERK         2100
+                      121            50
+
+        133 Jason                Mallin
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+JMALLIN                   650.127.1934         14-JUN-04 ST_CLERK         3300
+                      122            50
+
+        134 Michael              Rogers
+MROGERS                   650.127.1834         26-AUG-06 ST_CLERK         2900
+                      122            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        135 Ki                   Gee
+KGEE                      650.127.1734         12-DEC-07 ST_CLERK         2400
+                      122            50
+
+        136 Hazel                Philtanker
+HPHILTAN                  650.127.1634         06-FEB-08 ST_CLERK         2200
+                      122            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        137 Renske               Ladwig
+RLADWIG                   650.121.1234         14-JUL-03 ST_CLERK         3600
+                      123            50
+
+        138 Stephen              Stiles
+SSTILES                   650.121.2034         26-OCT-05 ST_CLERK         3200
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      123            50
+
+        139 John                 Seo
+JSEO                      650.121.2019         12-FEB-06 ST_CLERK         2700
+                      123            50
+
+        140 Joshua               Patel
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+JPATEL                    650.121.1834         06-APR-06 ST_CLERK         2500
+                      123            50
+
+        141 Trenna               Rajs
+TRAJS                     650.121.8009         17-OCT-03 ST_CLERK         3500
+                      124            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        142 Curtis               Davies
+CDAVIES                   650.121.2994         29-JAN-05 ST_CLERK         3100
+                      124            50
+
+        143 Randall              Matos
+RMATOS                    650.121.2874         15-MAR-06 ST_CLERK         2600
+                      124            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        144 Peter                Vargas
+PVARGAS                   650.121.2004         09-JUL-06 ST_CLERK         2500
+                      124            50
+
+        145 John                 Russell
+JRUSSEL                   011.44.1344.429268   01-OCT-04 SA_MAN          14000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+            .4        100            80
+
+        146 Karen                Partners
+KPARTNER                  011.44.1344.467268   05-JAN-05 SA_MAN          13500
+            .3        100            80
+
+        147 Alberto              Errazuriz
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+AERRAZUR                  011.44.1344.429278   10-MAR-05 SA_MAN          12000
+            .3        100            80
+
+        148 Gerald               Cambrault
+GCAMBRAU                  011.44.1344.619268   15-OCT-07 SA_MAN          11000
+            .3        100            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        149 Eleni                Zlotkey
+EZLOTKEY                  011.44.1344.429018   29-JAN-08 SA_MAN          10500
+            .2        100            80
+
+        150 Peter                Tucker
+PTUCKER                   011.44.1344.129268   30-JAN-05 SA_REP          10000
+            .3        145            80
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        151 David                Bernstein
+DBERNSTE                  011.44.1344.345268   24-MAR-05 SA_REP           9500
+           .25        145            80
+
+        152 Peter                Hall
+PHALL                     011.44.1344.478968   20-AUG-05 SA_REP           9000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+           .25        145            80
+
+        153 Christopher          Olsen
+COLSEN                    011.44.1344.498718   30-MAR-06 SA_REP           8000
+            .2        145            80
+
+        154 Nanette              Cambrault
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+NCAMBRAU                  011.44.1344.987668   09-DEC-06 SA_REP           7500
+            .2        145            80
+
+        155 Oliver               Tuvault
+OTUVAULT                  011.44.1344.486508   23-NOV-07 SA_REP           7000
+           .15        145            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        156 Janette              King
+JKING                     011.44.1345.429268   30-JAN-04 SA_REP          10000
+           .35        146            80
+
+        157 Patrick              Sully
+PSULLY                    011.44.1345.929268   04-MAR-04 SA_REP           9500
+           .35        146            80
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        158 Allan                McEwen
+AMCEWEN                   011.44.1345.829268   01-AUG-04 SA_REP           9000
+           .35        146            80
+
+        159 Lindsey              Smith
+LSMITH                    011.44.1345.729268   10-MAR-05 SA_REP           8000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+            .3        146            80
+
+        160 Louise               Doran
+LDORAN                    011.44.1345.629268   15-DEC-05 SA_REP           7500
+            .3        146            80
+
+        161 Sarath               Sewall
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+SSEWALL                   011.44.1345.529268   03-NOV-06 SA_REP           7000
+           .25        146            80
+
+        162 Clara                Vishney
+CVISHNEY                  011.44.1346.129268   11-NOV-05 SA_REP          10500
+           .25        147            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        163 Danielle             Greene
+DGREENE                   011.44.1346.229268   19-MAR-07 SA_REP           9500
+           .15        147            80
+
+        164 Mattea               Marvins
+MMARVINS                  011.44.1346.329268   24-JAN-08 SA_REP           7200
+            .1        147            80
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        165 David                Lee
+DLEE                      011.44.1346.529268   23-FEB-08 SA_REP           6800
+            .1        147            80
+
+        166 Sundar               Ande
+SANDE                     011.44.1346.629268   24-MAR-08 SA_REP           6400
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+            .1        147            80
+
+        167 Amit                 Banda
+ABANDA                    011.44.1346.729268   21-APR-08 SA_REP           6200
+            .1        147            80
+
+        168 Lisa                 Ozer
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+LOZER                     011.44.1343.929268   11-MAR-05 SA_REP          11500
+           .25        148            80
+
+        169 Harrison             Bloom
+HBLOOM                    011.44.1343.829268   23-MAR-06 SA_REP          10000
+            .2        148            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        170 Tayler               Fox
+TFOX                      011.44.1343.729268   24-JAN-06 SA_REP           9600
+            .2        148            80
+
+        171 William              Smith
+WSMITH                    011.44.1343.629268   23-FEB-07 SA_REP           7400
+           .15        148            80
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        172 Elizabeth            Bates
+EBATES                    011.44.1343.529268   24-MAR-07 SA_REP           7300
+           .15        148            80
+
+        173 Sundita              Kumar
+SKUMAR                    011.44.1343.329268   21-APR-08 SA_REP           6100
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+            .1        148            80
+
+        174 Ellen                Abel
+EABEL                     011.44.1644.429267   11-MAY-04 SA_REP          11000
+            .3        149            80
+
+        175 Alyssa               Hutton
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+AHUTTON                   011.44.1644.429266   19-MAR-05 SA_REP           8800
+           .25        149            80
+
+        176 Jonathon             Taylor
+JTAYLOR                   011.44.1644.429265   24-MAR-06 SA_REP           8600
+            .2        149            80
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        177 Jack                 Livingston
+JLIVINGS                  011.44.1644.429264   23-APR-06 SA_REP           8400
+            .2        149            80
+
+        178 Kimberely            Grant
+KGRANT                    011.44.1644.429263   24-MAY-07 SA_REP           7000
+           .15        149
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        179 Charles              Johnson
+CJOHNSON                  011.44.1644.429262   04-JAN-08 SA_REP           6200
+            .1        149            80
+
+        180 Winston              Taylor
+WTAYLOR                   650.507.9876         24-JAN-06 SH_CLERK         3200
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      120            50
+
+        181 Jean                 Fleaur
+JFLEAUR                   650.507.9877         23-FEB-06 SH_CLERK         3100
+                      120            50
+
+        182 Martha               Sullivan
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+MSULLIVA                  650.507.9878         21-JUN-07 SH_CLERK         2500
+                      120            50
+
+        183 Girard               Geoni
+GGEONI                    650.507.9879         03-FEB-08 SH_CLERK         2800
+                      120            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        184 Nandita              Sarchand
+NSARCHAN                  650.509.1876         27-JAN-04 SH_CLERK         4200
+                      121            50
+
+        185 Alexis               Bull
+ABULL                     650.509.2876         20-FEB-05 SH_CLERK         4100
+                      121            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        186 Julia                Dellinger
+JDELLING                  650.509.3876         24-JUN-06 SH_CLERK         3400
+                      121            50
+
+        187 Anthony              Cabrio
+ACABRIO                   650.509.4876         07-FEB-07 SH_CLERK         3000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      121            50
+
+        188 Kelly                Chung
+KCHUNG                    650.505.1876         14-JUN-05 SH_CLERK         3800
+                      122            50
+
+        189 Jennifer             Dilly
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+JDILLY                    650.505.2876         13-AUG-05 SH_CLERK         3600
+                      122            50
+
+        190 Timothy              Gates
+TGATES                    650.505.3876         11-JUL-06 SH_CLERK         2900
+                      122            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        191 Randall              Perkins
+RPERKINS                  650.505.4876         19-DEC-07 SH_CLERK         2500
+                      122            50
+
+        192 Sarah                Bell
+SBELL                     650.501.1876         04-FEB-04 SH_CLERK         4000
+                      123            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        193 Britney              Everett
+BEVERETT                  650.501.2876         03-MAR-05 SH_CLERK         3900
+                      123            50
+
+        194 Samuel               McCain
+SMCCAIN                   650.501.3876         01-JUL-06 SH_CLERK         3200
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      123            50
+
+        195 Vance                Jones
+VJONES                    650.501.4876         17-MAR-07 SH_CLERK         2800
+                      123            50
+
+        196 Alana                Walsh
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+AWALSH                    650.507.9811         24-APR-06 SH_CLERK         3100
+                      124            50
+
+        197 Kevin                Feeney
+KFEENEY                   650.507.9822         23-MAY-06 SH_CLERK         3000
+                      124            50
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        198 Donald               OConnell
+DOCONNEL                  650.507.9833         21-JUN-07 SH_CLERK         2600
+                      124            50
+
+        199 Douglas              Grant
+DGRANT                    650.507.9844         13-JAN-08 SH_CLERK         2600
+                      124            50
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+        200 Jennifer             Whalen
+JWHALEN                   515.123.4444         17-SEP-03 AD_ASST          4400
+                      101            10
+
+        201 Michael              Hartstein
+MHARTSTE                  515.123.5555         17-FEB-04 MK_MAN          13000
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+                      100            20
+
+        202 Pat                  Fay
+PFAY                      603.123.6666         17-AUG-05 MK_REP           6000
+                      201            20
+
+        203 Susan                Mavris
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+SMAVRIS                   515.123.7777         07-JUN-02 HR_REP           6500
+                      101            40
+
+        204 Hermann              Baer
+HBAER                     515.123.8888         07-JUN-02 PR_REP          10000
+                      101            70
+
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+        205 Shelley              Higgins
+SHIGGINS                  515.123.8080         07-JUN-02 AC_MGR          12008
+                      101           110
+
+        206 William              Gietz
+WGIETZ                    515.123.8181         07-JUN-02 AC_ACCOUNT       8300
+                      205           110
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME
+----------- -------------------- -------------------------
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY
+------------------------- -------------------- --------- ---------- ----------
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID
+-------------- ---------- -------------
+
+
+107 rows selected.
+
+SQL> select e.last_name, m.last_name from employees e join employees m on(e.manager_id=m.employee_id);
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Smith                     Cambrault
+Ozer                      Cambrault
+Kumar                     Cambrault
+Fox                       Cambrault
+Bloom                     Cambrault
+Bates                     Cambrault
+Hunold                    De Haan
+Vishney                   Errazuriz
+Marvins                   Errazuriz
+Lee                       Errazuriz
+Greene                    Errazuriz
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Banda                     Errazuriz
+Ande                      Errazuriz
+Sarchand                  Fripp
+Olson                     Fripp
+Marlow                    Fripp
+Dellinger                 Fripp
+Cabrio                    Fripp
+Bull                      Fripp
+Bissot                    Fripp
+Atkinson                  Fripp
+Urman                     Greenberg
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Sciarra                   Greenberg
+Popp                      Greenberg
+Faviet                    Greenberg
+Chen                      Greenberg
+Fay                       Hartstein
+Gietz                     Higgins
+Pataballa                 Hunold
+Lorentz                   Hunold
+Ernst                     Hunold
+Austin                    Hunold
+Rogers                    Kaufling
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Philtanker                Kaufling
+Perkins                   Kaufling
+Mallin                    Kaufling
+Gee                       Kaufling
+Gates                     Kaufling
+Dilly                     Kaufling
+Chung                     Kaufling
+Zlotkey                   King
+Weiss                     King
+Vollman                   King
+Russell                   King
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Raphaely                  King
+Partners                  King
+Mourgos                   King
+Kochhar                   King
+Kaufling                  King
+Hartstein                 King
+Fripp                     King
+Errazuriz                 King
+De Haan                   King
+Cambrault                 King
+Whalen                    Kochhar
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Mavris                    Kochhar
+Higgins                   Kochhar
+Greenberg                 Kochhar
+Baer                      Kochhar
+Walsh                     Mourgos
+Vargas                    Mourgos
+Rajs                      Mourgos
+OConnell                  Mourgos
+Matos                     Mourgos
+Grant                     Mourgos
+Feeney                    Mourgos
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Davies                    Mourgos
+Sully                     Partners
+Smith                     Partners
+Sewall                    Partners
+McEwen                    Partners
+King                      Partners
+Doran                     Partners
+Tobias                    Raphaely
+Khoo                      Raphaely
+Himuro                    Raphaely
+Colmenares                Raphaely
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Baida                     Raphaely
+Tuvault                   Russell
+Tucker                    Russell
+Olsen                     Russell
+Hall                      Russell
+Cambrault                 Russell
+Bernstein                 Russell
+Stiles                    Vollman
+Seo                       Vollman
+Patel                     Vollman
+McCain                    Vollman
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Ladwig                    Vollman
+Jones                     Vollman
+Everett                   Vollman
+Bell                      Vollman
+Taylor                    Weiss
+Sullivan                  Weiss
+Nayer                     Weiss
+Mikkilineni               Weiss
+Markle                    Weiss
+Landry                    Weiss
+Geoni                     Weiss
+
+LAST_NAME                 LAST_NAME
+------------------------- -------------------------
+Fleaur                    Weiss
+Taylor                    Zlotkey
+Livingston                Zlotkey
+Johnson                   Zlotkey
+Hutton                    Zlotkey
+Grant                     Zlotkey
+Abel                      Zlotkey
+
+106 rows selected.
+
+SQL> select sum(salary) from employees;
+
+SUM(SALARY)
+-----------
+     691416
+
+SQL> select min(salary) from employees;
+
+MIN(SALARY)
+-----------
+       2100
+
+SQL> select max(salary) from employees;
+
+MAX(SALARY)
+-----------
+      24000
+
+SQL> select avg(salary) from employees;
+
+AVG(SALARY)
+-----------
+ 6461.83178
+
+SQL> select count(*) from employees;
+
+  COUNT(*)
+----------
+       107
+
+SQL> select sum(salary),min(salary),max(salary),avg(salary),count(*) from employees;
+
+SUM(SALARY) MIN(SALARY) MAX(SALARY) AVG(SALARY)   COUNT(*)
+----------- ----------- ----------- ----------- ----------
+     691416        2100       24000  6461.83178        107
+
+SQL> selct avg(salary) from employees group by department_id;
+SP2-0734: unknown command beginning "selct avg(..." - rest of line ignored.
+SQL> select avg(salary) from employees group by department_id;
+
+AVG(SALARY)
+-----------
+ 8601.33333
+       4150
+       7000
+ 19333.3333
+       9500
+      10000
+      10154
+ 3475.55556
+ 8955.88235
+       6500
+       5760
+
+AVG(SALARY)
+-----------
+       4400
+
+12 rows selected.
+
+SQL> select distinct count(department_id) from employees;
+
+COUNT(DEPARTMENT_ID)
+--------------------
+                 106
+
+SQL> select count(department_id) from employees;
+
+COUNT(DEPARTMENT_ID)
+--------------------
+                 106
+
+SQL> select count(department_id) from employees group by department_id;
+
+COUNT(DEPARTMENT_ID)
+--------------------
+                   1
+                   2
+                   6
+                   1
+                  45
+                   5
+                   1
+                  34
+                   3
+                   6
+                   2
+
+11 rows selected.
+
+SQL> select avg(salary), department_id group by department_id;
+select avg(salary), department_id group by department_id
+                                  *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select avg(salary), department_id from employees group by department_id;
+
+AVG(SALARY) DEPARTMENT_ID
+----------- -------------
+ 8601.33333           100
+       4150            30
+       7000
+ 19333.3333            90
+       9500            20
+      10000            70
+      10154           110
+ 3475.55556            50
+ 8955.88235            80
+       6500            40
+       5760            60
+
+AVG(SALARY) DEPARTMENT_ID
+----------- -------------
+       4400            10
+
+12 rows selected.
+
+SQL> select avg(salary), last_name from employees group by department_id;
+select avg(salary), last_name from employees group by department_id
+                    *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression
+
+
+SQL> select avg(salary), last_name from employees group by department_id,last_name;
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+       2700 Seo
+       9250 Cambrault
+       9000 McEwen
+       8400 Livingston
+       3400 Dellinger
+       8300 Gietz
+       4800 Austin
+       4800 Pataballa
+       6900 Popp
+       2900 Baida
+       8000 Weiss
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+       8200 Fripp
+       2700 Mikkilineni
+       2800 Atkinson
+       2100 Olson
+       2200 Philtanker
+       3200 Stiles
+       7300 Bates
+       6100 Kumar
+       3200 Taylor
+       2500 Sullivan
+       4200 Sarchand
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+       4000 Bell
+       6000 Ernst
+       7700 Sciarra
+       2600 Himuro
+       7900 Kaufling
+       3200 Nayer
+       2400 Landry
+      14000 Russell
+      12000 Errazuriz
+       7500 Doran
+       9500 Greene
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+       6200 Banda
+       7000 Grant
+       3900 Everett
+       3000 Feeney
+      10000 Baer
+      12008 Higgins
+       9000 Hunold
+       9000 Faviet
+       2500 Colmenares
+       5800 Mourgos
+       2500 Patel
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+      13500 Partners
+       7700 Smith
+       3100 Fleaur
+       3600 Dilly
+       3100 Walsh
+       2600 Grant
+      24000 King
+       3100 Khoo
+       3300 Bissot
+       2900 Rogers
+       2400 Gee
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+       2600 Matos
+      10000 Tucker
+       8000 Olsen
+      10000 King
+       3000 Cabrio
+       3200 McCain
+      13000 Hartstein
+      17000 Kochhar
+      17000 De Haan
+      12008 Greenberg
+       3600 Ladwig
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+      10500 Zlotkey
+       9000 Hall
+       7000 Sewall
+      10500 Vishney
+       6400 Ande
+       8600 Taylor
+       6200 Johnson
+       2800 Geoni
+       6500 Mavris
+       8200 Chen
+      11000 Raphaely
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+       6500 Vollman
+       2500 Marlow
+       3300 Mallin
+       3500 Rajs
+       9500 Bernstein
+       7000 Tuvault
+       9500 Sully
+       7200 Marvins
+       6800 Lee
+      10000 Bloom
+       9600 Fox
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+       8800 Hutton
+       2500 Perkins
+       2800 Jones
+       4200 Lorentz
+       7800 Urman
+       2800 Tobias
+       2200 Markle
+       3100 Davies
+       2500 Vargas
+      11500 Ozer
+      11000 Abel
+
+AVG(SALARY) LAST_NAME
+----------- -------------------------
+       4100 Bull
+       3800 Chung
+       2900 Gates
+       2600 OConnell
+       4400 Whalen
+       6000 Fay
+
+105 rows selected.
+
+SQL> select avg(salary),department_id, last_name from employees group by department_id,last_name;
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+       2700            50 Seo
+       9250            80 Cambrault
+       9000            80 McEwen
+       8400            80 Livingston
+       3400            50 Dellinger
+       8300           110 Gietz
+       4800            60 Austin
+       4800            60 Pataballa
+       6900           100 Popp
+       2900            30 Baida
+       8000            50 Weiss
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+       8200            50 Fripp
+       2700            50 Mikkilineni
+       2800            50 Atkinson
+       2100            50 Olson
+       2200            50 Philtanker
+       3200            50 Stiles
+       7300            80 Bates
+       6100            80 Kumar
+       3200            50 Taylor
+       2500            50 Sullivan
+       4200            50 Sarchand
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+       4000            50 Bell
+       6000            60 Ernst
+       7700           100 Sciarra
+       2600            30 Himuro
+       7900            50 Kaufling
+       3200            50 Nayer
+       2400            50 Landry
+      14000            80 Russell
+      12000            80 Errazuriz
+       7500            80 Doran
+       9500            80 Greene
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+       6200            80 Banda
+       7000               Grant
+       3900            50 Everett
+       3000            50 Feeney
+      10000            70 Baer
+      12008           110 Higgins
+       9000            60 Hunold
+       9000           100 Faviet
+       2500            30 Colmenares
+       5800            50 Mourgos
+       2500            50 Patel
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+      13500            80 Partners
+       7700            80 Smith
+       3100            50 Fleaur
+       3600            50 Dilly
+       3100            50 Walsh
+       2600            50 Grant
+      24000            90 King
+       3100            30 Khoo
+       3300            50 Bissot
+       2900            50 Rogers
+       2400            50 Gee
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+       2600            50 Matos
+      10000            80 Tucker
+       8000            80 Olsen
+      10000            80 King
+       3000            50 Cabrio
+       3200            50 McCain
+      13000            20 Hartstein
+      17000            90 Kochhar
+      17000            90 De Haan
+      12008           100 Greenberg
+       3600            50 Ladwig
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+      10500            80 Zlotkey
+       9000            80 Hall
+       7000            80 Sewall
+      10500            80 Vishney
+       6400            80 Ande
+       8600            80 Taylor
+       6200            80 Johnson
+       2800            50 Geoni
+       6500            40 Mavris
+       8200           100 Chen
+      11000            30 Raphaely
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+       6500            50 Vollman
+       2500            50 Marlow
+       3300            50 Mallin
+       3500            50 Rajs
+       9500            80 Bernstein
+       7000            80 Tuvault
+       9500            80 Sully
+       7200            80 Marvins
+       6800            80 Lee
+      10000            80 Bloom
+       9600            80 Fox
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+       8800            80 Hutton
+       2500            50 Perkins
+       2800            50 Jones
+       4200            60 Lorentz
+       7800           100 Urman
+       2800            30 Tobias
+       2200            50 Markle
+       3100            50 Davies
+       2500            50 Vargas
+      11500            80 Ozer
+      11000            80 Abel
+
+AVG(SALARY) DEPARTMENT_ID LAST_NAME
+----------- ------------- -------------------------
+       4100            50 Bull
+       3800            50 Chung
+       2900            50 Gates
+       2600            50 OConnell
+       4400            10 Whalen
+       6000            20 Fay
+
+105 rows selected.
+
+SQL> select avg(salary),department_id, first_name from employees group by department_id,first_name;
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+      24000            90 Steven
+       4200            60 Diana
+       2800            30 Sigal
+       7900            50 Payam
+       2700            50 Irene
+       2800            50 Mozhe
+       3300            50 Jason
+       8000            80 Christopher
+       7500            80 Nanette
+       7400            80 William
+       7300            80 Elizabeth
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+       4100            50 Alexis
+       3900            50 Britney
+       3200            50 Samuel
+       9000            60 Alexander
+       6900           100 Luis
+       2900            30 Shelli
+       2600            30 Guy
+       2200            50 Hazel
+       3200            50 Stephen
+       2500            50 Joshua
+       9500            80 Peter
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+       6400            80 Sundar
+       6200            80 Amit
+       6100            80 Sundita
+       6200            80 Charles
+       3200            50 Winston
+       3800            50 Kelly
+       4400            10 Jennifer
+       7800           100 Jose Manuel
+       2450            50 James
+       2200            50 Steven
+       3600            50 Renske
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+       7200            80 Mattea
+      10000            80 Harrison
+      11000            80 Ellen
+       8800            80 Alyssa
+       7000               Kimberely
+       3000            50 Anthony
+       3600            50 Jennifer
+       2600            50 Donald
+      17000            90 Lex
+       6000            60 Bruce
+       4800            60 Valli
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+      12008           100 Nancy
+       8000            50 Matthew
+       8200            50 Adam
+       2700            50 John
+      10500            80 Eleni
+       7500            80 Louise
+      10500            80 Clara
+      11500            80 Lisa
+       9600            80 Tayler
+       2800            50 Girard
+       2600            50 Douglas
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+      12008           110 Shelley
+       4800            60 David
+       3300            50 Julia
+       3300            50 Laura
+       2900            50 Michael
+       3500            50 Trenna
+       2500            50 Peter
+      11000            80 Gerald
+       2800            50 Vance
+       8200           100 John
+       2500            30 Karen
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+       2100            50 TJ
+       2550            50 Randall
+      12000            80 Alberto
+       7000            80 Oliver
+       3100            50 Jean
+       4200            50 Nandita
+       4000            50 Sarah
+      13000            20 Michael
+      10000            70 Hermann
+       8300           110 William
+      17000            90 Neena
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+       9000           100 Daniel
+       3100            30 Alexander
+       4400            50 Kevin
+       3100            50 Curtis
+       8150            80 David
+      10000            80 Janette
+       9000            80 Allan
+       7000            80 Sarath
+       9500            80 Danielle
+       8600            80 Jonathon
+       2500            50 Martha
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+       6500            40 Susan
+       7700           100 Ismael
+      11000            30 Den
+       6500            50 Shanta
+       2400            50 Ki
+      14000            80 John
+      13500            80 Karen
+       9500            80 Patrick
+       8000            80 Lindsey
+       8400            80 Jack
+       2900            50 Timothy
+
+AVG(SALARY) DEPARTMENT_ID FIRST_NAME
+----------- ------------- --------------------
+       3100            50 Alana
+       6000            20 Pat
+
+101 rows selected.
+
+SQL> select avg(salary),job_id from employees group by department_id,job_id;
+
+AVG(SALARY) JOB_ID
+----------- ----------
+       8300 AC_ACCOUNT
+      17000 AD_VP
+       2785 ST_CLERK
+ 8396.55172 SA_REP
+       7280 ST_MAN
+      12200 SA_MAN
+      12008 AC_MGR
+      24000 AD_PRES
+       5760 IT_PROG
+      12008 FI_MGR
+       2780 PU_CLERK
+
+AVG(SALARY) JOB_ID
+----------- ----------
+       3215 SH_CLERK
+      13000 MK_MAN
+       7920 FI_ACCOUNT
+       7000 SA_REP
+      10000 PR_REP
+      11000 PU_MAN
+       4400 AD_ASST
+       6000 MK_REP
+       6500 HR_REP
+
+20 rows selected.
+
+SQL> select job_id from employees;
+
+JOB_ID
+----------
+AC_ACCOUNT
+AC_MGR
+AD_ASST
+AD_PRES
+AD_VP
+AD_VP
+FI_ACCOUNT
+FI_ACCOUNT
+FI_ACCOUNT
+FI_ACCOUNT
+FI_ACCOUNT
+
+JOB_ID
+----------
+FI_MGR
+HR_REP
+IT_PROG
+IT_PROG
+IT_PROG
+IT_PROG
+IT_PROG
+MK_MAN
+MK_REP
+PR_REP
+PU_CLERK
+
+JOB_ID
+----------
+PU_CLERK
+PU_CLERK
+PU_CLERK
+PU_CLERK
+PU_MAN
+SA_MAN
+SA_MAN
+SA_MAN
+SA_MAN
+SA_MAN
+SA_REP
+
+JOB_ID
+----------
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+
+JOB_ID
+----------
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+
+JOB_ID
+----------
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SA_REP
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+
+JOB_ID
+----------
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+
+JOB_ID
+----------
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+SH_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+
+JOB_ID
+----------
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_CLERK
+
+JOB_ID
+----------
+ST_CLERK
+ST_CLERK
+ST_CLERK
+ST_MAN
+ST_MAN
+ST_MAN
+ST_MAN
+ST_MAN
+
+107 rows selected.
+
+SQL> select department_id from employess;
+select department_id from employess
+                          *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select department_id from employees;
+
+DEPARTMENT_ID
+-------------
+           90
+           90
+           90
+           60
+           60
+           60
+           60
+           60
+          100
+          100
+          100
+
+DEPARTMENT_ID
+-------------
+          100
+          100
+          100
+           30
+           30
+           30
+           30
+           30
+           30
+           50
+           50
+
+DEPARTMENT_ID
+-------------
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+
+DEPARTMENT_ID
+-------------
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+
+DEPARTMENT_ID
+-------------
+           50
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+
+DEPARTMENT_ID
+-------------
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+
+DEPARTMENT_ID
+-------------
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+           80
+
+DEPARTMENT_ID
+-------------
+           80
+
+           80
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+
+DEPARTMENT_ID
+-------------
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+           50
+
+DEPARTMENT_ID
+-------------
+           50
+           10
+           20
+           20
+           40
+           70
+          110
+          110
+
+107 rows selected.
+
+SQL> select employee_id from employees;
+
+EMPLOYEE_ID
+-----------
+        100
+        101
+        102
+        103
+        104
+        105
+        106
+        107
+        108
+        109
+        110
+
+EMPLOYEE_ID
+-----------
+        111
+        112
+        113
+        114
+        115
+        116
+        117
+        118
+        119
+        120
+        121
+
+EMPLOYEE_ID
+-----------
+        122
+        123
+        124
+        125
+        126
+        127
+        128
+        129
+        130
+        131
+        132
+
+EMPLOYEE_ID
+-----------
+        133
+        134
+        135
+        136
+        137
+        138
+        139
+        140
+        141
+        142
+        143
+
+EMPLOYEE_ID
+-----------
+        144
+        145
+        146
+        147
+        148
+        149
+        150
+        151
+        152
+        153
+        154
+
+EMPLOYEE_ID
+-----------
+        155
+        156
+        157
+        158
+        159
+        160
+        161
+        162
+        163
+        164
+        165
+
+EMPLOYEE_ID
+-----------
+        166
+        167
+        168
+        169
+        170
+        171
+        172
+        173
+        174
+        175
+        176
+
+EMPLOYEE_ID
+-----------
+        177
+        178
+        179
+        180
+        181
+        182
+        183
+        184
+        185
+        186
+        187
+
+EMPLOYEE_ID
+-----------
+        188
+        189
+        190
+        191
+        192
+        193
+        194
+        195
+        196
+        197
+        198
+
+EMPLOYEE_ID
+-----------
+        199
+        200
+        201
+        202
+        203
+        204
+        205
+        206
+
+107 rows selected.
+
+SQL> select avg(salary) from employees group by department_id,job_id;
+
+AVG(SALARY)
+-----------
+       8300
+      17000
+       2785
+ 8396.55172
+       7280
+      12200
+      12008
+      24000
+       5760
+      12008
+       2780
+
+AVG(SALARY)
+-----------
+       3215
+      13000
+       7920
+       7000
+      10000
+      11000
+       4400
+       6000
+       6500
+
+20 rows selected.
+
+SQL> select avg(salary) from employees group by department_id having avg(salary) > 10000;
+
+AVG(SALARY)
+-----------
+ 19333.3333
+      10154
+
+SQL> select avg(salary) from employees group by department_id having avg(salary) < 10000;
+
+AVG(SALARY)
+-----------
+ 8601.33333
+       4150
+       7000
+       9500
+ 3475.55556
+ 8955.88235
+       6500
+       5760
+       4400
+
+9 rows selected.
+
+SQL> select avg(salary), department_id from employees group by department_id having avg(salary) < 10000;
+
+AVG(SALARY) DEPARTMENT_ID
+----------- -------------
+ 8601.33333           100
+       4150            30
+       7000
+       9500            20
+ 3475.55556            50
+ 8955.88235            80
+       6500            40
+       5760            60
+       4400            10
+
+9 rows selected.
+
+SQL> select salary from employees where department_id= ;
+select salary from employees where department_id=
+                                                 *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select salary from employees where department_id='' ;
+
+no rows selected
+
+SQL> select avg(salary) from employees where department_id='' ;
+
+AVG(SALARY)
+-----------
+
+
+SQL>
+
+SQL> select table_name from user_tables;
+
+TABLE_NAME
+------------------------------
+REGIONS
+LOCATIONS
+DEPARTMENTS
+JOBS
+EMPLOYEES
+JOB_HISTORY
+AJINKYA
+STUDENT
+TABLEONE
+TABLETWO
+TABLETHREE
+
+TABLE_NAME
+------------------------------
+COUNTRIES
+
+12 rows selected.
+
+SQL>SQL> create table maths(num1 number,num2 number);
+
+Table created.
+
+SQL> insert into maths values(1,2);
+
+1 row created.
+
+SQL> insert into maths values(3,4);
+
+1 row created.
+
+SQL> insert into maths values(5,6);
+
+1 row created.
+
+SQL> insert into maths values(7,8);
+
+1 row created.
+
+SQL> insert into maths values(9,10);
+
+1 row created.
+
+SQL> insert into maths values(20,30);
+
+1 row created.
+
+SQL> insert into maths values(21,31);
+
+1 row created.
+
+SQL> insert into maths values(22,32);
+
+1 row created.
+
+SQL> insert into maths values(23,33);
+
+1 row created.
+
+SQL> insert into maths values(24,34);
+
+1 row created.
+
+SQL> insert into maths values(25,35);
+
+1 row created.
+
+SQL> insert into maths values(26,36);
+
+1 row created.
+
+SQL> insert into maths values(27,37);
+
+1 row created.
+
+SQL> insert into maths values(28,38);
+
+1 row created.
+
+SQL> insert into maths values(29,39);
+
+1 row created.
+
+SQL> insert into maths values(30,40);
+
+1 row created.
+
+SQL> select * from maths;
+
+      NUM1       NUM2
+---------- ----------
+         1          2
+         3          4
+         5          6
+         7          8
+         9         10
+        20         30
+        21         31
+        22         32
+        23         33
+        24         34
+        25         35
+
+      NUM1       NUM2
+---------- ----------
+        26         36
+        27         37
+        28         38
+        29         39
+        30         40
+
+16 rows selected.
+
+SQL> select sum(Num1) from maths;
+
+ SUM(NUM1)
+----------
+       300
+
+SQL> select sum(Num2) from maths;
+
+ SUM(NUM2)
+----------
+       415
+
+SQL> select sqrt(num1) from maths;
+
+SQRT(NUM1)
+----------
+         1
+1.73205081
+2.23606798
+2.64575131
+         3
+4.47213595
+4.58257569
+4.69041576
+4.79583152
+4.89897949
+         5
+
+SQRT(NUM1)
+----------
+5.09901951
+5.19615242
+5.29150262
+5.38516481
+5.47722558
+
+16 rows selected.
+
+SQL> select sqrt(num2) from maths;
+
+SQRT(NUM2)
+----------
+1.41421356
+         2
+2.44948974
+2.82842712
+3.16227766
+5.47722558
+5.56776436
+5.65685425
+5.74456265
+5.83095189
+5.91607978
+
+SQRT(NUM2)
+----------
+         6
+6.08276253
+  6.164414
+  6.244998
+6.32455532
+
+16 rows selected.
+
+SQL> select pow(num1) from maths;
+select pow(num1) from maths
+       *
+ERROR at line 1:
+ORA-00904: "POW": invalid identifier
+
+
+SQL> select Power(num1) from maths;
+select Power(num1) from maths
+       *
+ERROR at line 1:
+ORA-00909: invalid number of arguments
+
+
+SQL> select power(num1) from maths;
+select power(num1) from maths
+       *
+ERROR at line 1:
+ORA-00909: invalid number of arguments
+
+
+SQL>Microsoft Windows [Version 10.0.22000.1219]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\ajink>sqlplus
+
+SQL*Plus: Release 11.2.0.2.0 Production on Sun Nov 20 09:49:18 2022
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+Enter user-name: hr
+Enter password:
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> select * from employee;
+select * from employee
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select table from user_table;
+select table from user_table
+       *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select table_name from user_tables;
+
+TABLE_NAME
+------------------------------
+REGIONS
+LOCATIONS
+DEPARTMENTS
+JOBS
+EMPLOYEES
+JOB_HISTORY
+AJINKYA
+STUDENT
+TABLEONE
+TABLETWO
+TABLETHREE
+
+TABLE_NAME
+------------------------------
+MATHS
+COUNTRIES
+
+13 rows selected.
+
+SQL> use TableOne;
+SP2-0734: unknown command beginning "use TableO..." - rest of line ignored.
+SQL> select * from Ajinkya;
+
+no rows selected
+
+SQL> select * from TableOne;
+
+       EID ENAME                EMAIL
+---------- -------------------- --------------------
+         1 Ajinkya              Ajinnkya1@gmail.com
+         2 Vinod                Vinod2gmail.com
+         3 Kapil                Kapil3@gmail.com
+         4 Prajwal              Prajwal4@gmail.com
+         5 Ashok                Ashok5@gmail.com
+
+SQL> select * from TableTwo;
+
+ENAME                CITY
+-------------------- --------------------
+Ajinkya              Pandharpur
+Rajesh               Solapur
+Vinod                Pandharpur
+Sandip               Pune
+
+SQL> select * from TableThree;
+
+EMP_NAME             CITY
+-------------------- --------------------
+Ajinkya              Solapur
+Vinod                Pandharpur
+Aditya               Pune
+Avinash              Sangola
+
+SQL> alter table TableOne add salary number;
+
+Table altered.
+
+SQL> select * from Tableone;
+
+       EID ENAME                EMAIL                    SALARY
+---------- -------------------- -------------------- ----------
+         1 Ajinkya              Ajinnkya1@gmail.com
+         2 Vinod                Vinod2gmail.com
+         3 Kapil                Kapil3@gmail.com
+         4 Prajwal              Prajwal4@gmail.com
+         5 Ashok                Ashok5@gmail.com
+
+SQL> insert into tableone values(10000);
+insert into tableone values(10000)
+            *
+ERROR at line 1:
+ORA-00947: not enough values
+
+
+SQL> insert into tableone where salary = 10000;
+insert into tableone where salary = 10000
+                     *
+ERROR at line 1:
+ORA-00926: missing VALUES keyword
+
+
+SQL> insert into tableone salary = 10000 where eid=1;
+insert into tableone salary = 10000 where eid=1
+                            *
+ERROR at line 1:
+ORA-00926: missing VALUES keyword
+
+
+SQL> insert into tableone values salary = 10000 where eid=1;
+insert into tableone values salary = 10000 where eid=1
+                                   *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> update table tableone add salary   = 10000 where eid = 1;
+update table tableone add salary   = 10000 where eid = 1
+       *
+ERROR at line 1:
+ORA-00903: invalid table name
+
+
+SQL> update  tableone add salary   = 10000 where eid = 1;
+update  tableone add salary   = 10000 where eid = 1
+                 *
+ERROR at line 1:
+ORA-00971: missing SET keyword
+
+
+SQL> update  tableone set salary   = 10000 where eid = 1;
+
+1 row updated.
+
+SQL> update  tableone set salary   = 20000 where eid = 2;
+
+1 row updated.
+
+SQL> update  tableone set salary   = 25000 where eid = 3;
+
+1 row updated.
+
+SQL> update  tableone set salary   = 23000 where eid = 4;
+
+1 row updated.
+
+SQL> update  tableone set salary   = 23000 where eid = 5;
+
+1 row updated.
+
+SQL> select * from tableone;
+
+       EID ENAME                EMAIL                    SALARY
+---------- -------------------- -------------------- ----------
+         1 Ajinkya              Ajinnkya1@gmail.com       10000
+         2 Vinod                Vinod2gmail.com           20000
+         3 Kapil                Kapil3@gmail.com          25000
+         4 Prajwal              Prajwal4@gmail.com        23000
+         5 Ashok                Ashok5@gmail.com          23000
+
+SQL> select EName from tableone where = (select avg(salary) from tableone);
+select EName from tableone where = (select avg(salary) from tableone)
+                                 *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select EName from tableone where = (select avg(salary)>10000 from tableone);
+select EName from tableone where = (select avg(salary)>10000 from tableone)
+                                 *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL>
+SQL> select EName from tableone where (select avg(salary) from tableone);
+select EName from tableone where (select avg(salary) from tableone)
+                                                                  *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select EName from tableone where salary > (select avg(salary) from tableone);
+
+ENAME
+--------------------
+Kapil
+Prajwal
+Ashok
+
+SQL> select Ename from TableOne where Eid= (3) And salary > 10000;
+
+ENAME
+--------------------
+Kapil
+
+SQL> select Ename from TableOne where Eid= (3) And salary > 35000;
+
+no rows selected
+
+SQL> select Ename from TableOne where salary in (select salary from tableone where salary > 20000);
+
+ENAME
+--------------------
+Kapil
+Ashok
+Prajwal
+
+SQL> select Ename from TableOne where Ename = 'Ajinkya' from TableThree;
+select Ename from TableOne where Ename = 'Ajinkya' from TableThree
+                                                   *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select Ename from TableOne where Ename =(select Emp_name from TableThree );
+select Ename from TableOne where Ename =(select Emp_name from TableThree )
+                                         *
+ERROR at line 1:
+ORA-01427: single-row subquery returns more than one row
+
+
+SQL> select Ename from TableOne where Ename= 'Ajinkya'where (select Emp_name from TableThree );
+select Ename from TableOne where Ename= 'Ajinkya'where (select Emp_name from TableThree )
+                                                 *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select Email from tableone where EName = (select Ename where city = 'Pandharpur');
+select Email from tableone where EName = (select Ename where city = 'Pandharpur')
+                                                       *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select Email from tableone where EName = (select Ename from TableTwo where city = 'Pandharpur');
+select Email from tableone where EName = (select Ename from TableTwo where city = 'Pandharpur')
+                                          *
+ERROR at line 1:
+ORA-01427: single-row subquery returns more than one row
+
+
+SQL> select Email from tableone where EName in (select Ename from TableTwo where city = 'Pandharpur');
+
+EMAIL
+--------------------
+Ajinnkya1@gmail.com
+Vinod2gmail.com
+
+SQL> select Email from tableone where EName in (select Ename from TableTwo where city = 'pune');
+
+no rows selected
+
+SQL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

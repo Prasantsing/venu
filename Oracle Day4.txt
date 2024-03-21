@@ -1,0 +1,70 @@
+select * from emp;
+
+select * from dept;
+
+select ename from emp where sal > (select avg(sal) from emp);
+
+select * from emp where sal < (select avg(sal) from emp);
+
+select empno, ename from emp where sal in(select sal from emp where deptno=10);
+
+select empno, ename from emp where deptno = (select deptno from emp where JOB='PRESIDENT') AND sal >(select avg(sal) from emp);
+
+select empno, ename from emp where deptno in (select deptno from emp where JOB='MANAGER') AND sal > (select avg(sal) from emp);
+
+
+select empno, ename from emp where deptno in (select deptno from dept) AND sal > (select avg(sal) from emp);
+
+create index emp_index on emp(ename);
+
+drop index emp_index;
+
+create view view_emp as select empno, ename from emp;
+
+lkdwjcgdjwld v;d2gfouwdjhfyuj
+
+select * from view_emp;
+
+insert into view_emp values(102,'Ajinkya');
+
+select * from view_emp;
+
+select * from emp;
+
+delete from emp where empno=101;
+
+create view view_complex as select count(empno) as count_col from emp;
+
+select * from view_complex;
+
+insert into view_complex values(1);
+
+create sequence seqone;
+
+CREATE SEQUENCE customers_seq
+ START WITH     1000
+ maxvalue 1001
+ INCREMENT BY   1;
+
+create table vinod(RN Number, Name Varchar2(20));
+
+insert into vinod values(customers_seq.nextval,'ABC');
+
+select * from Vinod;
+
+create synonym syn_one for vinod;
+
+select * from syn_one;
+
+insert into syn_one values(customers_seq.nextval,'PQR');
+
+
+create table vinod1(ch varchar2(1), Name Varchar2(20));
+
+CREATE SEQUENCE seq1
+ START WITH 1
+ INCREMENT BY  1;
+
+ insert into vinod1 values(seq1.nextval, 'ABC');
+
+ select * from vinod1;
